@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.Map;
  **/
 public class SparseArray {
     public static void main(String[] args) {
-        // 二维数组转稀疏数组
+       /* // 二维数组转稀疏数组
         int[][] arr = new int[11][11];
         arr[2][3] = 23;
         arr[4][5] = 45;
@@ -35,9 +36,15 @@ public class SparseArray {
         sparse[2][0] = 5;
         sparse[2][1] = 6;
         sparse[2][2] = 67;
-        sparseArrToArr(sparse);
+        sparseArrToArr(sparse);*/
+        diskToData("D:\\map.data");
     }
 
+    /**
+     * 常规数组转稀疏数组
+     *
+     * @param arr
+     */
     public static void arrToSparseArr(int[][] arr) {
         // 1 原始二维数组，11行11列，仅仅2个有效数据
         System.out.println("原始二维数组: ");
@@ -77,8 +84,14 @@ public class SparseArray {
         }
         System.out.println("稀疏数组: ");
         arrStdOut(spareArr);
+        dataToDisk(spareArr);
     }
 
+    /**
+     * 稀疏数组转常规数组
+     *
+     * @param sparseArr
+     */
     public static void sparseArrToArr(int[][] sparseArr) {
         // 1 遍历第一行数据构建二维数组
         System.out.println("原始稀疏数组: ");
@@ -88,17 +101,22 @@ public class SparseArray {
         int[][] arr = new int[row][col];
 
         // 2 还原数据
-        for (int i = 1; i <sparseArr.length ; i++) {
-           int tempRow = sparseArr[i][0];
-           int tempCol = sparseArr[i][1];
-           int tempVal = sparseArr[i][2];
-           arr[tempRow][tempCol] = tempVal;
+        for (int i = 1; i < sparseArr.length; i++) {
+            int tempRow = sparseArr[i][0];
+            int tempCol = sparseArr[i][1];
+            int tempVal = sparseArr[i][2];
+            arr[tempRow][tempCol] = tempVal;
         }
 
         System.out.println("二维数组: ");
         arrStdOut(arr);
     }
 
+    /**
+     * 数组控制台打印
+     *
+     * @param arr
+     */
     public static void arrStdOut(int[][] arr) {
         // 行
         for (int i = 0; i < arr.length; i++) {
@@ -107,6 +125,38 @@ public class SparseArray {
                 System.out.print(arr[i][j] + " ");
             }
             System.out.println();
+        }
+    }
+
+    /**
+     * 数据存磁盘
+     *
+     * @param data
+     */
+    public static void dataToDisk(int[][] data) {
+        try {
+            // 相对路径，如果没有则要建立一个新的output.txt文件
+            File writeName = new File("D:\\map.data");
+            if (!writeName.exists()) {
+                writeName.createNewFile(); // 创建新文件,有同名的文件的话直接覆盖
+            }
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(writeName));
+            out.writeObject(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 磁盘取数据
+     */
+    public static void diskToData(String filePath) {
+        try  {
+            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filePath));
+            int[][] data = (int[][]) inputStream.readObject();
+            arrStdOut(data);
+        } catch (Exception e) {
+
         }
     }
 }
