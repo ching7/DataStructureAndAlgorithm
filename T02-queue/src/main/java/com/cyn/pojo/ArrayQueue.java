@@ -10,7 +10,7 @@ package com.cyn.pojo;
  * @Version: 1.0
  * @Description: 队列类
  **/
-public class ArraQueue {
+public class ArrayQueue {
     /**
      * 队列最大容量
      */
@@ -26,15 +26,15 @@ public class ArraQueue {
     /**
      * 存放队列数据，模拟队列
      */
-    private int[] arr;
+    private Integer[] arr;
 
-    public ArraQueue(int maxSize) {
+    public ArrayQueue(int maxSize) {
         this.maxSize = maxSize;
-        arr = new int[maxSize];
-        // 指向队列头部，头部前一个数据
-        front = -1;
-        // 指向队列尾部，包含尾部
-        rear = -1;
+        arr = new Integer[maxSize];
+        // 指向队列头部
+        front = 0;
+        // 指向队列尾部
+        rear = 0;
     }
 
     /**
@@ -43,7 +43,12 @@ public class ArraQueue {
      * @return
      */
     public boolean isFull() {
-        return rear == maxSize - 1;
+        /**
+         * MaxSize是你的数组的大小，如果最后一个元素位置被使用后，要再存下一个元素，
+         * 那么按循环队列的定义，应该是存到数组的开头，而对MaxSize取余则可以使得下标从MaxSize-1变为0，然后递增，达到循环的目的。
+         */
+        boolean isFull = (rear + 1) % maxSize == front;
+        return isFull;
     }
 
     /**
@@ -64,10 +69,11 @@ public class ArraQueue {
             System.out.println("Queue is Full");
             return;
         }
-        //尾部后移
-        rear++;
         //添加数据
         arr[rear] = n;
+        //尾部后移
+        rear = (rear + 1) % maxSize;
+
     }
 
     /**
@@ -79,8 +85,9 @@ public class ArraQueue {
         if (isEmpty()) {
             throw new RuntimeException("Queue is Empty");
         }
-        front++;
-        return arr[front];
+        int res = arr[front];
+        front = (front + 1) % maxSize;
+        return res;
     }
 
     /**
@@ -91,8 +98,8 @@ public class ArraQueue {
         if (isEmpty()) {
             System.out.println("Queue is Empty");
         }
-        for (int i = 0; i < arr.length; i++) {
-            System.out.printf("arr[%d]=%d", i, arr[i]);
+        for (int i = front; i < front + size(); i++) {
+            System.out.printf("arr[%d]=%d\n", i % maxSize, arr[i % maxSize]);
         }
     }
 
@@ -105,6 +112,16 @@ public class ArraQueue {
         if (isEmpty()) {
             throw new RuntimeException("Queue is Empty");
         }
-        return arr[front+1];
+        return arr[front];
+    }
+
+    /**
+     * 判断数组有效数据个数
+     *
+     * @return
+     */
+    public int size() {
+        int numCount = (rear + maxSize - front) % maxSize;
+        return numCount;
     }
 }
