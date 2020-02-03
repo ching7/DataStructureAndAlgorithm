@@ -13,6 +13,7 @@ package com.cyn.pojo;
 public class ArrayQueue {
     /**
      * 队列最大容量
+     * 有效数据只有maxSize-1
      */
     private int maxSize;
     /**

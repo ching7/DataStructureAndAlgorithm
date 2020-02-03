@@ -2,8 +2,6 @@ package com.cyn.demo;
 
 import com.cyn.pojo.ArrayQueue;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
 import java.util.Scanner;
 
 /**
