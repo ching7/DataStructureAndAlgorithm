@@ -12,8 +12,9 @@
         <module>T01-sparseArray</module>
         <module>T02-queue</module>
         <module>T03-linkedList</module>
-        <module>T04-binarySearch</module>
+        <module>M01-binarySearch</module>
         <module>T04-tree</module>
+        <module>M02-recursion</module>
     </modules>
 
 

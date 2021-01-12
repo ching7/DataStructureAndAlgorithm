@@ -6,8 +6,8 @@ import java.util.List;
 /**
  * @author chenyanan
  * Created by chenyanan on 2021/1/12
- * 1
- * 3  2  4
+ *      1
+ *   3  2  4
  * 5  6
  * 前序遍历[1,3,5,6,2,4]
  */

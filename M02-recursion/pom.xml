@@ -9,8 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.cyn</groupId>
-    <artifactId>T02-queue</artifactId>
+    <artifactId>M02-recursion</artifactId>
 
 
 </project>
