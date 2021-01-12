@@ -18,17 +18,40 @@ public class Nodes {
     private List<Nodes> childrenNode;
     private ArrayList<Integer> frontNodeRes = new ArrayList<>();
 
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
+
+    public List<Nodes> getChildrenNode() {
+        return childrenNode;
+    }
+
+    public void setChildrenNode(List<Nodes> childrenNode) {
+        this.childrenNode = childrenNode;
+    }
+
+    public ArrayList<Integer> getFrontNodeRes() {
+        return frontNodeRes;
+    }
+
+    public void setFrontNodeRes(ArrayList<Integer> frontNodeRes) {
+        this.frontNodeRes = frontNodeRes;
+    }
+
     public ArrayList<Integer> getHeadNodes(Nodes nodes) {
         return getNextNodeValue(nodes, frontNodeRes);
     }
 
     public ArrayList getNextNodeValue(Nodes allNodes, ArrayList<Integer> res) {
         res.add(allNodes.value);
-        if (allNodes.childrenNode.size() > 0) {
+        if (allNodes.childrenNode != null && allNodes.childrenNode.size() > 0) {
             for (Nodes nodes :
                     allNodes.childrenNode) {
-                res.add(nodes.value);
-                return getNextNodeValue(nodes, res);
+                getNextNodeValue(nodes, res);
             }
         }
         return res;
