@@ -1,5 +1,8 @@
 package com.cyn.binarytree;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+
 /**
  * @author chenyanan
  * Created by chenyanan on 2021/1/12
@@ -24,11 +27,40 @@ public class BinaryTree {
         heroNode3.setLeft(heroNode5);
         heroNode3.setRight(heroNode6);
 
-        heroNode1.getFrontHead(heroNode1);
+        heroNode1.getFrontNode();
         System.out.println("===");
-        heroNode1.getMidHead(heroNode1);
+        heroNode1.getMidNode();
         System.out.println("===");
-        heroNode1.getTailHead(heroNode1);
+        heroNode1.getTailNode();
+        ArrayList<Integer> count = new ArrayList<>();
+        heroNode1.findHeadNode(2, count, 0);
+        // 遍历次数
+        System.out.println("=== " + count.size());
+        // 二叉树层数
+        System.out.println("=== " + count.stream().max(Comparator.naturalOrder()).get());
+        count.forEach(findcount -> {
+            System.out.println("=== " + findcount);
+        });
+
+        ArrayList<Integer> count1 = new ArrayList<>();
+        heroNode1.findMidNode(2, count1, 0);
+        // 遍历次数
+        System.out.println("===1 " + count1.size());
+        // 二叉树层数
+        System.out.println("===1 " + count1.stream().max(Comparator.naturalOrder()).get());
+        count1.forEach(findcount -> {
+            System.out.println("===1 " + findcount);
+        });
+
+        ArrayList<Integer> count2 = new ArrayList<>();
+        heroNode1.findTailNode(2, count2, 0);
+        // 遍历次数
+        System.out.println("===2 " + count2.size());
+        // 二叉树层数
+        System.out.println("===2 " + count2.stream().max(Comparator.naturalOrder()).get());
+        count2.forEach(findcount -> {
+            System.out.println("===2 " + findcount);
+        });
     }
 }
 
@@ -61,41 +93,99 @@ class HeroNode {
         return right;
     }
 
+    @Override
+    public String toString() {
+        return "HeroNode{" +
+                "val=" + val +
+                '}';
+    }
+
     public void setRight(HeroNode right) {
         this.right = right;
     }
 
+    //==遍历
     // 前序
-    public void getFrontHead(HeroNode heroNode) {
-        System.out.println(heroNode.val);
-        if (heroNode.getLeft() != null) {
-            getFrontHead(heroNode.getLeft());
+    public void getFrontNode() {
+        System.out.println(this.val);
+        if (this.getLeft() != null) {
+            this.getLeft().getFrontNode();
         }
-        if (heroNode.getRight() != null) {
-            getFrontHead(heroNode.getRight());
+        if (this.getRight() != null) {
+            this.getRight().getFrontNode();
         }
     }
 
     // 中序
-    public void getMidHead(HeroNode heroNode) {
-        if (heroNode.getLeft() != null) {
-            getMidHead(heroNode.getLeft());
+    public void getMidNode() {
+        if (this.getLeft() != null) {
+            this.getLeft().getMidNode();
         }
-        System.out.println(heroNode.val);
-        if (heroNode.getRight() != null) {
-            getMidHead(heroNode.getRight());
+        System.out.println(this.val);
+        if (this.getRight() != null) {
+            this.getRight().getMidNode();
         }
     }
 
     // 后序
-    public void getTailHead(HeroNode heroNode) {
-        if (heroNode.getLeft() != null) {
-            getTailHead(heroNode.getLeft());
+    public void getTailNode() {
+        if (this.getLeft() != null) {
+            this.getLeft().getTailNode();
         }
-        if (heroNode.getRight() != null) {
-            getTailHead(heroNode.getRight());
+        if (this.getRight() != null) {
+            this.getRight().getTailNode();
         }
-        System.out.println(heroNode.val);
+        System.out.println(this.val);
+    }
 
+    //==查找
+    // 前序
+    private int findfloor = 0;
+
+    public void findHeadNode(int val, ArrayList<Integer> count, int findfloor) {
+        findfloor++;
+        count.add(findfloor);
+        System.out.println("find val in nodes " + this.toString());
+        if (this.val == val) {
+            System.out.println("find val = " + val);
+        }
+        if (this.left != null) {
+            this.getLeft().findHeadNode(val, count, findfloor);
+        }
+        if (this.right != null) {
+            this.getRight().findHeadNode(val, count, findfloor);
+        }
+    }
+
+    // 中序
+    public void findMidNode(int val, ArrayList<Integer> count, int findfloor) {
+        findfloor++;
+        count.add(findfloor);
+        if (this.left != null) {
+            this.getLeft().findMidNode(val, count, findfloor);
+        }
+        System.out.println("find val in nodes " + this.toString());
+        if (this.val == val) {
+            System.out.println("find val = " + val);
+        }
+        if (this.right != null) {
+            this.getRight().findMidNode(val, count, findfloor);
+        }
+    }
+
+    // 后序
+    public void findTailNode(int val, ArrayList<Integer> count, int findfloor) {
+        findfloor++;
+        count.add(findfloor);
+        if (this.left != null) {
+            this.getLeft().findTailNode(val, count, findfloor);
+        }
+        if (this.right != null) {
+            this.getRight().findTailNode(val, count, findfloor);
+        }
+        System.out.println("find val in nodes " + this.toString());
+        if (this.val == val) {
+            System.out.println("find val = " + val);
+        }
     }
 }
