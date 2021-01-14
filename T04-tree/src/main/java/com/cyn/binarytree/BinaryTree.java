@@ -1,7 +1,9 @@
 package com.cyn.binarytree;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
 
 /**
  * @author chenyanan
@@ -12,6 +14,8 @@ import java.util.Comparator;
  * 前序：1 3 5 6 2 abdecfg
  * 中序：5 3 6 1 2 dbeafcg
  * 后序：5 6 3 2 1 debfgca
+ * <p>
+ * 前中后序遍历可以理解为特殊的深度遍历
  */
 public class BinaryTree {
     public static void main(String[] args) {
@@ -29,12 +33,25 @@ public class BinaryTree {
 
         heroNode1.getFrontNode();
         System.out.println("===");
+        heroNode1.getFrontNodeNoRecursion();
+        System.out.println("==getFrontNodeNoRecursion=");
+
         heroNode1.getMidNode();
         System.out.println("===");
+        heroNode1.getMidNodeNoRecursion();
+        System.out.println("==getMidNodeNoRecursion=");
+
         heroNode1.getTailNode();
+        System.out.println("===");
+        heroNode1.getTailNodeNoRecursion();
+        System.out.println("==getTailNodeNoRecursion=");
+        heroNode1.breadthFirstTraverse();
+        System.out.println("==breadthFirstTraverse=");
         ArrayList<Integer> count = new ArrayList<>();
         heroNode1.findHeadNode(2, count, 0);
-        // 遍历次数
+
+        heroNode1. breadthFirstTraverse();
+        /*// 遍历次数
         System.out.println("=== " + count.size());
         // 二叉树层数
         System.out.println("=== " + count.stream().max(Comparator.naturalOrder()).get());
@@ -60,7 +77,7 @@ public class BinaryTree {
         System.out.println("===2 " + count2.stream().max(Comparator.naturalOrder()).get());
         count2.forEach(findcount -> {
             System.out.println("===2 " + findcount);
-        });
+        });*/
     }
 }
 
@@ -105,7 +122,7 @@ class HeroNode {
     }
 
     //==遍历
-    // 前序
+    // 前序递归
     public void getFrontNode() {
         System.out.println(this.val);
         if (this.getLeft() != null) {
@@ -113,6 +130,29 @@ class HeroNode {
         }
         if (this.getRight() != null) {
             this.getRight().getFrontNode();
+        }
+    }
+
+    // 前序非递归
+
+    /**
+     * * 1
+     * * 3    2
+     * * 5  6
+     */
+    public void getFrontNodeNoRecursion() {
+        Stack<HeroNode> stack = new Stack<>();
+        HeroNode curNode = this;
+        stack.push(curNode);
+        while (!stack.isEmpty()) {
+            curNode = stack.pop();
+            System.out.println(curNode.val);
+            if (curNode.getRight() != null) {
+                stack.push(curNode.getRight());
+            }
+            if (curNode.getLeft() != null) {
+                stack.push(curNode.getLeft());
+            }
         }
     }
 
@@ -127,6 +167,30 @@ class HeroNode {
         }
     }
 
+    // 中序非递归 ****
+
+    /**
+     * * 1
+     * * 3    2
+     * * 5  6
+     */
+    public void getMidNodeNoRecursion() {
+        Stack<HeroNode> stack = new Stack<>();
+        HeroNode cur = this;
+        //
+        // 5 3 6 1 2
+        while (cur != null || !stack.isEmpty()) {
+            while (cur != null) {
+                // 一直循环到二叉排序树最左端的叶子结点（currentNode是null）
+                stack.push(cur);
+                cur = cur.getLeft();
+            }
+            cur = stack.pop();
+            System.out.println(cur.val);
+            cur = cur.getRight();
+        }
+    }
+
     // 后序
     public void getTailNode() {
         if (this.getLeft() != null) {
@@ -136,6 +200,58 @@ class HeroNode {
             this.getRight().getTailNode();
         }
         System.out.println(this.val);
+    }
+
+    /**
+     * * 1
+     * * 3    2
+     * * 5  6
+     */
+    // 后序非递归
+    // 1
+    // 5 6 3 2 1
+    public void getTailNodeNoRecursion() {
+        Stack<HeroNode> stack = new Stack<>();
+        HeroNode cur = this;
+        HeroNode rightNode = null;
+        while (cur != null || !stack.isEmpty()) {
+            while (cur != null) {
+                // 一直循环到二叉排序树最左端的叶子结点（currentNode是null）
+                stack.push(cur);
+                cur = cur.getLeft();
+            }
+            cur = stack.pop();
+
+            while (cur.getRight() == null || cur.getRight() == rightNode) {
+                // 当前结点没有右结点或上一个结点（已经输出的结点）是当前结点的右结点，则输出当前结点
+                System.out.println(cur.val);
+                rightNode = cur;
+                if (stack.isEmpty()) {
+                    //root以输出，则遍历结束
+                    return;
+                }
+                cur = stack.pop();
+            }
+            stack.push(cur); //还有右结点没有遍历
+            cur = cur.right;
+        }
+    }
+
+    // 广度遍历
+    public void breadthFirstTraverse() {
+        Queue<HeroNode> queue = new LinkedList<>();
+        HeroNode curNode = null;
+        queue.offer(this);
+        while (!queue.isEmpty()) {
+            curNode = queue.poll();
+            System.out.println(curNode.val);
+            if (curNode.left != null) {
+                queue.offer(curNode.left);
+            }
+            if (curNode.right != null) {
+                queue.offer(curNode.right);
+            }
+        }
     }
 
     //==查找
