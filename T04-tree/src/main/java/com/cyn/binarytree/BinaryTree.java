@@ -1,9 +1,6 @@
 package com.cyn.binarytree;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * @author chenyanan
@@ -25,6 +22,8 @@ public class BinaryTree {
         HeroNode heroNode5 = new HeroNode(5);
         HeroNode heroNode6 = new HeroNode(6);
 
+        HashSet<String> strings = new HashSet<>();
+        strings.add("1");
         heroNode1.setLeft(heroNode3);
         heroNode1.setRight(heroNode2);
 
